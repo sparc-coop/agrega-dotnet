@@ -1,0 +1,55 @@
+﻿@page "/creators"
+
+<h3>Creators</h3>
+
+<h4>Blogs</h4>
+<p>
+    @foreach (var blog in blogs)
+    {
+        <div class="col-lg-3 col-md-6 mt-4 pt-2">
+            <div class="card team team-primary text-center border-0">
+                <div class="position-relative">
+                    <img src="@blog.ImageUrl" class="img-fluid avatar avatar-ex-large rounded-circle shadow" alt="">
+                    <ul class="list-unstyled mb-0 team-icon">
+                    </ul>
+                </div>
+                <div class="card-body py-3 px-0 content">
+                    <h5 class="mb-0"><a href="#" class="name text-dark">@blog.Name</a></h5>
+
+                </div>
+            </div>
+        </div>
+    }
+</p>
+
+<h4>Channels</h4>
+<p>
+    @foreach (var channel in channels)
+    {
+        <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
+            <div class="d-flex align-items-center">
+                <img src="@channel.ImageUrl" class="avatar avatar-medium rounded-circle img-thumbnail" alt="">
+                <div class="content ms-3">
+                    <h5 class="mb-0"><a href="javascript:void(0)" class="text-dark">@channel.Name</a></h5>
+                </div>
+            </div>
+        </div>
+    }
+</p>
+
+@code {
+    ICollection<Blog> blogs = new List<Blog>();
+
+    ICollection<Channel> channels = new List<Channel>();
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            blogs = await Api.GetBlogsAsync();
+            channels = await Api.GetChannelsAsync();
+            StateHasChanged();
+        }
+
+    }
+}
