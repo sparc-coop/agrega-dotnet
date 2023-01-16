@@ -1,6 +1,11 @@
+using Microsoft.Extensions.Azure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddBlossom(builder.Configuration["WebClientUrl"]);
+
+var youtubeApiKey = builder.Configuration["YoutubeKey"];
+
 
 //builder.Services.AddAzureStorage(builder.Configuration.GetConnectionString("Storage")!);
 
