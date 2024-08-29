@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sparc.Blossom.ApiGenerator"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sparc.Blossom", "..\blossom\Sparc.Blossom.Server\Sparc.Blossom.csproj", "{DDC173A6-47E5-44DD-956C-EE8EB5636300}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sparc.Blossom.Authentication.Passwordless", "..\blossom\Sparc.Blossom.Authentication.Passwordless\Sparc.Blossom.Authentication.Passwordless.csproj", "{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,14 @@ Global
 		{DDC173A6-47E5-44DD-956C-EE8EB5636300}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDC173A6-47E5-44DD-956C-EE8EB5636300}.Release|x64.ActiveCfg = Release|Any CPU
 		{DDC173A6-47E5-44DD-956C-EE8EB5636300}.Release|x64.Build.0 = Release|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Debug|x64.Build.0 = Debug|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Release|x64.ActiveCfg = Release|Any CPU
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +95,7 @@ Global
 		{8A6FCE58-8F01-44DA-BCF5-0B957CFADFD5} = {985A2B39-91B7-497A-AE12-2FE7E901FACA}
 		{45757C4D-1A37-47EC-A41F-2BD454878707} = {985A2B39-91B7-497A-AE12-2FE7E901FACA}
 		{DDC173A6-47E5-44DD-956C-EE8EB5636300} = {985A2B39-91B7-497A-AE12-2FE7E901FACA}
+		{A8EBB24C-521C-4E2C-B1DC-5E63998EDA2F} = {985A2B39-91B7-497A-AE12-2FE7E901FACA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58201C72-775B-436A-8512-E1B2D781FB51}

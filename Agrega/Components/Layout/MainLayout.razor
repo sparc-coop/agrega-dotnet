@@ -5,15 +5,19 @@
         <NavMenu />
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+    <CascadingValue Value="User">
+        <CascadingValue Value="Source">
+            <main>
+                <div class="top-row px-4">
+                    <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+                </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+                <article class="content px-4">
+                    @Body
+                </article>
+            </main>
+        </CascadingValue>
+    </CascadingValue>
 </div>
 
 <div id="blazor-error-ui">
@@ -21,3 +25,10 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@inject AuthenticationStateProvider Auth
+
+@code{
+    ClaimsPrincipal? User { get; set; }
+    Source? Source;
+}

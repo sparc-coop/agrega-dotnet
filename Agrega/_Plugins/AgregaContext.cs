@@ -1,8 +1,6 @@
-﻿using Agrega.Sources.Entities;
-using Agrega.Users;
-using Microsoft.EntityFrameworkCore;
-using Sparc.Blossom;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace Agrega;
 public partial class AgregaContext(BlossomContextOptions options) : BlossomContext(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
@@ -12,6 +10,4 @@ public partial class AgregaContext(BlossomContextOptions options) : BlossomConte
         var source = builder.Entity<Source>().HasPartitionKey(x => x.SourceId);
         var post = builder.Entity<Post>().HasPartitionKey(x => x.SourceId);
     }
-
-
 }

@@ -1,11 +1,10 @@
 using Agrega.Components;
-using Agrega.Users;
-using Sparc.Blossom;
-using Sparc.Blossom.Data;
+using Agrega;
+using Sparc.Blossom.Authentication.Passwordless;
 
-
-BlossomApplication.Run<App,User>(args,
+BlossomApplication.Run<Html, User>(args,
     builder =>
     {
         builder.Services.AddCosmos<AgregaContext>(builder.Configuration["ConnectionStrings:CosmosDb"]!, "Agrega", ServiceLifetime.Scoped);
+        builder.AddBlossomPasswordlessAuthentication<User>();
     });

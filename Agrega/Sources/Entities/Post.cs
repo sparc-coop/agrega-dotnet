@@ -1,5 +1,4 @@
-﻿using Sparc.Blossom;
-using Sparc.Blossom.Data;
+﻿namespace Agrega;
 
 public class Post : BlossomEntity<string>
 {
