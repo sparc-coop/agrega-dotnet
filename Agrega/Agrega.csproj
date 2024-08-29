@@ -4,7 +4,12 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>9fb8aff0-d4db-4388-a216-17962d93721c</UserSecretsId>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Sparc.Blossom.Data.Cosmos" Version="8.0.0" />
+	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Core\Sparc.Blossom.Core.csproj" />
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Server.ApiGenerator\Sparc.Blossom.ApiGenerator.csproj" OutputItemType="Analyzer" />

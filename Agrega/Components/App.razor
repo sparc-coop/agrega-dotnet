@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Sparc.Blossom
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,6 +14,7 @@
 </head>
 
 <body>
+    <BlossomApp Program="Program" DefaultLayout="Layout.MainLayout" @rendermode="new InteractiveServerRenderMode(false)" />
     <Routes />
     <script src="_framework/blazor.web.js"></script>
 </body>

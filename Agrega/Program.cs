@@ -1,36 +1,11 @@
 using Agrega.Components;
+using Agrega.Users;
+using Sparc.Blossom;
+using Sparc.Blossom.Data;
 
-namespace Agrega
-{
-    public class Program
+
+BlossomApplication.Run<App,User>(args,
+    builder =>
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            builder.Services.AddRazorComponents()
-                .AddInteractiveServerComponents();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseStaticFiles();
-            app.UseAntiforgery();
-
-            app.MapRazorComponents<App>()
-                .AddInteractiveServerRenderMode();
-
-            app.Run();
-        }
-    }
-}
+        builder.Services.AddCosmos<AgregaContext>(builder.Configuration["ConnectionStrings:CosmosDb"]!, "Agrega", ServiceLifetime.Scoped);
+    });
