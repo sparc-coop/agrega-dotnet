@@ -7,12 +7,9 @@
 Welcome to your new app.
 
 
-@inject IConfiguration Config
 @code{
-    private IEnumerable<Source> Sources = [];
-
+    
     protected override async Task OnInitializedAsync()
     {
-        Sources = await Api.Sources.All();
     }
 }

@@ -4,7 +4,7 @@ public class Source : BlossomEntity<string>
 {
     public Source(string name, string url, string imageUrl, string description)
     {
-        Id = BlossomTools.FriendlyId();
+        Id = Guid.NewGuid().ToString();
         SourceId = Id;
         Name = name;
         Url = url;
