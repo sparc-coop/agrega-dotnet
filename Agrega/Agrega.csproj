@@ -5,10 +5,12 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>9fb8aff0-d4db-4388-a216-17962d93721c</UserSecretsId>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Sparc.Blossom.Data.Cosmos" Version="8.0.0" />
+	  <PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\blossom\Sparc.Blossom.Authentication.Passwordless\Sparc.Blossom.Authentication.Passwordless.csproj" />

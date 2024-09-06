@@ -1,10 +1,10 @@
-﻿@page "/"
+﻿@page "/read-later"
 @attribute [StreamRendering]
 
 
 <PageTitle>Agrega</PageTitle>
 
-<h1>Agrega</h1>
+<h1>Saved posts</h1>
 
 <p>Centralize Your Reading, Simplify Your Browsing</p>
 
@@ -29,7 +29,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await Api.Posts.All();
+        posts = await Api.Posts.ReadLaterList();
     }
 
 }

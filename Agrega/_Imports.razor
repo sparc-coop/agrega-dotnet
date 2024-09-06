@@ -1,4 +1,6 @@
-﻿@using System.Net.Http
+﻿@inherits BlossomRealtime
+
+@using System.Net.Http
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
@@ -16,5 +18,12 @@
 
 @using Sparc.Blossom.Api;
 
+@inject NavigationManager Nav;
 @inject BlossomApi Api;
+@inject IJSRuntime jsRuntime
+
+@using Sparc.Blossom.Realtime
+
+
 @using Source = Sparc.Blossom.Api.Source;
+@using Post = Sparc.Blossom.Api.Post;

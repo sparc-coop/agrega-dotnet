@@ -1,0 +1,75 @@
+﻿@using System.Xml
+@using System.ServiceModel.Syndication
+<div class="source-item">
+    <div class="avatar">
+        <img src="@Source.ImageUrl" alt="@Source.Name" />
+    </div>
+    <div class="info">
+        <h3>@Source.Name</h3>
+        <small>@Source.Description</small>
+
+        <p>
+            <input id="activeCheckbox" type="checkbox" checked="@Source.Active" @onchange="async () => await Source.UpdateVisibility(!Source.Active)" />
+            <label for="activeCheckbox">Active</label>
+           
+            @if (Fetching)
+            {
+                <div class="spinner-border spinner-border-sm mx-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            else
+            {
+                <button class="btn btn-link btn-sm" @onclick="async () => await FetchFeed(Source)">Fetch</button>
+            }
+        </p>
+
+        <p><a target="_blank" href="@Source.Url">@Source.Url</a></p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Source Source { get; set; }
+
+    private bool Fetching = false;
+
+    public async Task FetchFeed(Source source)
+    {
+        if(Source.Type == "RSS")
+        {
+            await FetchRSSFeed(source);
+        }
+    }
+
+    public async Task FetchRSSFeed(Source source)
+    {
+        Fetching = true;
+        XmlReader reader = XmlReader.Create(source.FeedUrl);
+        SyndicationFeed feed = SyndicationFeed.Load(reader);
+        reader.Close();
+
+        foreach (SyndicationItem item in feed.Items)
+        {
+
+            var url = item.Links?.FirstOrDefault().Uri.ToString();
+
+            bool exists = (await Api.Posts.Exists(url)).Count() > 0;
+
+            if (!exists)
+            {
+                await Api.Posts.Create(item.Title.Text,
+                    url,
+                    item.Summary.Text,
+                    item.PublishDate.DateTime,
+                    item.Authors?.Select(a => a.Name).ToList(),
+                    item.Categories?.Select(c => c.Name).ToList(),
+                    source.SourceId,
+                    source.Name,
+                    source.ImageUrl);
+            }
+        }
+
+        Fetching = false;
+    }
+}

@@ -1,0 +1,51 @@
+﻿@page "/addsource"
+@rendermode InteractiveServer
+
+<PageTitle>Source</PageTitle>
+
+
+<h3>Add new source</h3>
+
+<form>
+    <div class="mb-2">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" @bind="@newSource.Name" required />
+    </div>
+    <div class="mb-2">
+        <label for="url">Url:</label>
+        <input type="text" class="form-control" id="url" @bind="@newSource.Url" />
+    </div>
+    <div class="mb-2">
+        <label for="url">Feed Url:</label>
+        <input type="text" class="form-control" id="url" @bind="@newSource.FeedUrl" />
+    </div>
+    <div class="mb-2">
+        <label for="image">Image:</label>
+        <input type="text" class="form-control" id="imageUrl" @bind="@newSource.ImageUrl" />
+    </div>
+    <div class="mb-2">
+        <label for="description">Description:</label>
+        <input type="text" class="form-control" id="description" @bind="@newSource.Description" />
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="Add">Save</button>
+</form>
+@code {
+
+    private NewSource newSource = new NewSource();
+
+    private async Task Add()
+    {
+        await Api.Sources.Create(newSource.Name, newSource.Url, newSource.FeedUrl, newSource.ImageUrl, newSource.Description);
+        
+        Nav.NavigateTo("/sources");
+    }
+
+    public class NewSource
+    {
+        public string Name { get; set; }
+        public string? Url { get; set; }
+        public string? FeedUrl { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Description { get; set; }
+    }
+}

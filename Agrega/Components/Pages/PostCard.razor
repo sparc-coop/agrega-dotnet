@@ -1,0 +1,29 @@
+<div class="card">
+    <img src="@(Post.ImgUrl ?? Post.SourceImage)" class="card-img-top" @onclick="() => OpenSourceUrl()">
+    <div class="card-body">
+        <h5 @onclick="() => OpenSourceUrl()" class="card-title">@Post.Title</h5>
+        <small>@Post.PostDate.Value.ToShortDateString()</small>
+    </div>
+    <div class="card-footer">
+        <p>@Post.SourceName</p>
+        <i class="bi-share"></i>
+        <i class="@(Post.ReadLater.GetValueOrDefault() ? "bi-bookmark-dash-fill" : "bi-bookmark-plus")" @onclick="async () => await ToggleReadLater()"></i>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Post Post { get; set; }
+
+    public async Task ToggleReadLater()
+    {
+        await Post.ToggleReadLater();
+        Post.ReadLater = Post.ReadLater.HasValue ? !Post.ReadLater.Value : true;
+    }
+
+    public void OpenSourceUrl()
+    {
+        var js = $"window.open('{Post.Url}', '_blank')";
+        jsRuntime.InvokeVoidAsync("eval", js);
+    }
+}

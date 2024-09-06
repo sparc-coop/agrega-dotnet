@@ -1,0 +1,29 @@
+﻿.source-item{
+    padding: 20px 0px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+}
+
+.source-item .avatar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.source-item .avatar img {
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.source-item .info h3{
+    margin-bottom:0;
+}
+
+.source-item .info p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}

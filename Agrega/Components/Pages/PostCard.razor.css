@@ -1,0 +1,30 @@
+﻿.card{
+    border-radius: 12px;
+    min-height: 300px;
+}
+
+.card img {
+    border-radius: 12px 12px 0 0;
+    height: 200px;
+    object-fit:cover;
+    cursor: pointer;
+}
+
+.card-title {
+    cursor: pointer;
+}
+
+.card-footer{
+    background-color: white;
+    border-radius: 0 0 12px 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-footer i{
+    cursor: pointer;
+}
+
+.card-footer p{
+    margin-bottom:0;
+}

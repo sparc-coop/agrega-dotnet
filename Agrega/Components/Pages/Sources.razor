@@ -1,6 +1,7 @@
 ﻿@page "/sources"
 @attribute [StreamRendering]
 
+
 <PageTitle>Sources</PageTitle>
 
 <h1>Sources</h1>
@@ -13,91 +14,20 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Url</th>
-                <th>Image</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var source in sourcesList)
-            {
-                <tr>
-                    <td>@source.Name</td>
-                    <td>@source.Url</td>
-                    <td>@source.ImageUrl</td>
-                    <td>@source.DateCreated</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="sources-list">
+        @foreach (var source in sourcesList)
+        {
+            <SourceItem Source="source" />
+        }
+    </div>
 }
-
-
-
-<h3>Add new source</h3>
-
-<form>
-    <div class="mb-2">
-        <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" @bind="@newSource.Name" required />
-    </div>
-    <div class="mb-2">
-        <label for="url">Url:</label>
-        <input type="text" class="form-control" id="url" @bind="@newSource.Url" />
-    </div>
-    <div class="mb-2">
-        <label for="image">Image:</label>
-        <input type="text" class="form-control" id="imageUrl" @bind="@newSource.ImageUrl" />
-    </div>
-    <div class="mb-2">
-        <label for="description">Description:</label>
-        <input type="text" class="form-control" id="description" @bind="@newSource.Description" />
-    </div>
-    <button type="button" class="btn btn-primary" @onclick="AddSource">Save</button>
-</form>
 
 
 @code {
     private IEnumerable<Source> sourcesList = null!;
-    private NewSource newSource = new NewSource();
-    private bool showModal = false;
 
     protected override async Task OnInitializedAsync()
     {
         sourcesList = await Api.Sources.All();
-    }
-
-    private void OpenModal()
-    {
-        showModal = true;
-    }
-
-    private void CloseModal()
-    {
-        showModal = false;
-    }
-
-    private async Task AddSource()
-    {
-        sourcesList = null;
-
-        await Api.Sources.Create(newSource.Name, newSource.Url, newSource.ImageUrl, newSource.Description);
-
-        sourcesList = await Api.Sources.All();
-
-        newSource = new NewSource();
-        showModal = false;
-    }
-
-    public class NewSource
-    {
-        public string Name { get; set; }
-        public string? Url { get; set; }
-        public string? ImageUrl { get; set; }
-        public string? Description { get; set; }
     }
 }

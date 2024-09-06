@@ -1,0 +1,60 @@
+﻿@page "/addpost"
+@rendermode InteractiveServer
+
+<PageTitle>Post</PageTitle>
+
+
+<h3>Add new post</h3>
+
+<form>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" @bind="newPost.Title">
+    </div>
+    <div class="form-group">
+        <label for="source">Source</label>
+        <select class="form-control" id="source" @bind="newPost.SourceId">
+            @foreach (var source in sourcesList)
+            {
+                <option value="@source.Id">@source.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="url">URL</label>
+        <input type="text" class="form-control" id="url" @bind="newPost.Url">
+    </div>
+    <div class="form-group">
+        <label for="imgUrl">Image URL</label>
+        <input type="text" class="form-control" id="imgUrl" @bind="newPost.ImgUrl">
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="Add">Save</button>
+</form>
+
+@code {
+
+    private NewPost newPost = new NewPost();
+    private IEnumerable<Source> sourcesList = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        sourcesList = await Api.Sources.All();
+
+    }
+    private async Task Add()
+    {
+        var selectedSource = sourcesList.FirstOrDefault(s => s.Id == newPost.SourceId);
+
+       //await Api.Posts.Create(newPost.Title, newPost.Url, newPost.ImgUrl, newPost.SourceId, selectedSource.Name, selectedSource.ImageUrl);
+        
+        Nav.NavigateTo("/");
+    }
+
+    public class NewPost
+    {
+        public string Title { get; set; }
+        public string? SourceId { get; set; }
+        public string? Url { get; set; }
+        public string? ImgUrl { get; set; }
+    }
+}
