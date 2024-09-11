@@ -43,11 +43,23 @@ public class Post : BlossomEntity<string>
     public DateTimeOffset LastUpdatedTime;
 
     public DateTimeOffset PublishDate;
+    public int? Views { get; set; }
+    public int? Likes { get; set; }
 
     public bool? ReadLater { get; set; } = false;
 
     public void ToggleReadLater()
     {
         ReadLater = ReadLater.HasValue ? !ReadLater.Value : true;
+    }
+
+    public void AddLike()
+    {
+        Likes = Likes.HasValue ? Likes.Value + 1 : 1;
+    }
+
+    public void AddView()
+    {
+        Views = Views.HasValue ? Views.Value + 1 : 1;
     }
 }

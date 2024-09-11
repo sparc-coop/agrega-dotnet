@@ -11,7 +11,7 @@ public class Paginated : BlossomQuery<Post>
 {
     public Paginated(int page, int pageSize)
     {
-        Query.OrderByDescending(x => x.DateCreated);
+        Query.OrderByDescending(x => x.PostDate);
         Query.Skip((page - 1) * pageSize).Take(pageSize);
     }
 }

@@ -1,29 +1,61 @@
+@inherits BlossomRealtime
+
 <div class="card">
     <img src="@(Post.ImgUrl ?? Post.SourceImage)" class="card-img-top" @onclick="() => OpenSourceUrl()">
     <div class="card-body">
         <h5 @onclick="() => OpenSourceUrl()" class="card-title">@Post.Title</h5>
-        <small>@Post.PostDate.Value.ToShortDateString()</small>
+        <small>@Post.PostDate.Value.ToShortDateString()</small> |
+        <small>@(Post.Views.HasValue ? Post.Views.Value : 0) view(s)</small>
     </div>
     <div class="card-footer">
         <p>@Post.SourceName</p>
-        <i class="bi-share"></i>
-        <i class="@(Post.ReadLater.GetValueOrDefault() ? "bi-bookmark-dash-fill" : "bi-bookmark-plus")" @onclick="async () => await ToggleReadLater()"></i>
+        <i class="bi-share" @onclick="SharePostUrl"></i>
+        <div>
+            <i class="bi-heart" @onclick="AddLike"></i> @(Post.Likes.HasValue ? Post.Likes.Value : 0)
+        </div>
+        <i class="@(Post.ReadLater.GetValueOrDefault() ? "bi-bookmark-dash-fill" : "bi-bookmark-plus")" @onclick="() => ToggleReadLater()"></i>
     </div>
 </div>
 
+@using Microsoft.AspNetCore.SignalR.Client
 @code {
     [Parameter]
     public Post Post { get; set; }
 
-    public async Task ToggleReadLater()
+    protected override async Task OnInitializedAsync()
     {
-        await Post.ToggleReadLater();
-        Post.ReadLater = Post.ReadLater.HasValue ? !Post.ReadLater.Value : true;
+        Console.WriteLine("PostCard OnInitializedAsycn");
+
+        await RawOn<String>($"Post|{Post.Id}", async (res) =>
+        {
+            Console.WriteLine("Post updated", res);
+            Post = await Api.Posts.Get(Post.Id);
+            await InvokeAsync(StateHasChanged);
+        });
+
     }
 
-    public void OpenSourceUrl()
+    private async Task ToggleReadLater()
     {
+        await Post.ToggleReadLater();
+    }
+
+    private async Task OpenSourceUrl()
+    {
+        await Post.AddView();
         var js = $"window.open('{Post.Url}', '_blank')";
-        jsRuntime.InvokeVoidAsync("eval", js);
+        await jsRuntime.InvokeVoidAsync("eval", js);
+    }
+
+    private async Task SharePostUrl()
+    {
+        var textToShare = $"Stay updated with the latest .NET news! Check out this article: {Post.Url}. Shared via Agrega.NET";
+        await jsRuntime.InvokeVoidAsync("copyToClipboard", textToShare);
+        
+    }
+
+    private async Task AddLike()
+    {
+        await Post.AddLike();
     }
 }
