@@ -4,16 +4,19 @@
     <img src="@(Post.ImgUrl ?? Post.SourceImage)" class="card-img-top" @onclick="() => OpenSourceUrl()">
     <div class="card-body">
         <h5 @onclick="() => OpenSourceUrl()" class="card-title">@Post.Title</h5>
-        <small>@Post.PostDate.Value.ToShortDateString()</small> |
-        <small>@(Post.Views.HasValue ? Post.Views.Value : 0) view(s)</small>
+        <small>@Post?.PostDate!.Value.ToShortDateString()</small> |
+        <small>@(Post!.Views.HasValue ? Post.Views.Value : 0) view(s)</small>
+        <p>(PostId) @Post.Id</p>
+        <p>(ConnectionId) @Hub?.ConnectionId</p>
+        <p>@lastMsg</p>
     </div>
     <div class="card-footer">
         <p>@Post.SourceName</p>
-        <i class="bi-share" @onclick="SharePostUrl"></i>
+        <i class="bi-share" @onclick="SendMessage"></i>
         <div>
-            <i class="bi-heart" @onclick="AddLike"></i> @(Post.Likes.HasValue ? Post.Likes.Value : 0)
+            <i class="bi-heart" @onclick="async () => await Post.AddLike()"></i> @(Post.Likes.HasValue ? Post.Likes.Value : 0)
         </div>
-        <i class="@(Post.ReadLater.GetValueOrDefault() ? "bi-bookmark-dash-fill" : "bi-bookmark-plus")" @onclick="() => ToggleReadLater()"></i>
+        <i class="@(Post.ReadLater.GetValueOrDefault() ? "bi-bookmark-dash-fill" : "bi-bookmark-plus")" @onclick="async () => await Post.ToggleReadLater()"></i>
     </div>
 </div>
 
@@ -22,22 +25,43 @@
     [Parameter]
     public Post Post { get; set; }
 
+    public string lastMsg { get; set; } = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("PostCard OnInitializedAsycn");
 
-        await RawOn<String>($"Post|{Post.Id}", async (res) =>
+        // Hub.On<String>("ReceiveMessage", (res) =>
+        // {
+        //     Console.WriteLine("Post updated", res);
+        //     lastMsg = res;
+        //     InvokeAsync(StateHasChanged);
+        // });
+
+        await RawOn<String>($"ReceiveMessage", (res) =>
         {
-            Console.WriteLine("Post updated", res);
-            Post = await Api.Posts.Get(Post.Id);
-            await InvokeAsync(StateHasChanged);
+            Console.WriteLine("Post updated from raw On", res);
+            lastMsg = res;
         });
 
-    }
+        // await RawOn<String>($"Post|{Post.Id}", (res) =>
+        // {
+        //     Console.WriteLine("Post updated from raw On", res);
+        //     lastMsg = res;
+        // });
 
-    private async Task ToggleReadLater()
-    {
-        await Post.ToggleReadLater();
+        // await RawOn<String>("ReceiveMessage2", res =>
+        // {
+        //     Console.WriteLine("Post updated", res);
+        //     lastMsg = res;
+        // });
+
+        // await RawOn<String>($"Post|{Post.Id}", (res) =>
+        // {
+        //     Console.WriteLine("Post updated", res);
+        //     Post.Likes = Post.Likes.HasValue ? Post.Likes.Value + 1 : 1;
+        // });
+
     }
 
     private async Task OpenSourceUrl()
@@ -54,8 +78,25 @@
         
     }
 
-    private async Task AddLike()
+    private async Task SendMessage()
     {
-        await Post.AddLike();
+        if (Hub == null)
+        {
+            Console.WriteLine("Hub is null");
+            return;
+        }
+
+        await Hub.InvokeAsync("SendMessage", $"Hello from PostCard {Post.Id}");
     }
+
+    // private async Task SendGroupMessage()
+    // {
+    //     if (Hub == null)
+    //     {
+    //         Console.WriteLine("Hub is null");
+    //         return;
+    //     }
+
+    //     await Hub.InvokeAsync("SendMessage", $"Hello from PostCard {Post.Id}");
+    // }
 }
