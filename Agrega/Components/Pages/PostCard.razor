@@ -12,7 +12,7 @@
     </div>
     <div class="card-footer">
         <p>@Post.SourceName</p>
-        <i class="bi-share" @onclick="SendMessage"></i>
+        <i class="bi-share" @onclick="SendGroupMessage"></i>
         <div>
             <i class="bi-heart" @onclick="async () => await Post.AddLike()"></i> @(Post.Likes.HasValue ? Post.Likes.Value : 0)
         </div>
@@ -38,7 +38,7 @@
         //     InvokeAsync(StateHasChanged);
         // });
 
-        await RawOn<String>($"ReceiveMessage", (res) =>
+        await RawOn<String>($"post-{Post.Id}", (res) =>
         {
             Console.WriteLine("Post updated from raw On", res);
             lastMsg = res;
@@ -86,17 +86,18 @@
             return;
         }
 
+        //todo test pass the post id to broadcast for group there
         await Hub.InvokeAsync("SendMessage", $"Hello from PostCard {Post.Id}");
     }
 
-    // private async Task SendGroupMessage()
-    // {
-    //     if (Hub == null)
-    //     {
-    //         Console.WriteLine("Hub is null");
-    //         return;
-    //     }
+    private async Task SendGroupMessage()
+    {
+        if (Hub == null)
+        {
+            Console.WriteLine("Hub is null");
+            return;
+        }
 
-    //     await Hub.InvokeAsync("SendMessage", $"Hello from PostCard {Post.Id}");
-    // }
+        await Hub.InvokeAsync("SendToGroup", $"post-{Post.Id}", $"Hello from PostCard {Post.Id}");
+    }
 }
