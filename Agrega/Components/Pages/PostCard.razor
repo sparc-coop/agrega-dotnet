@@ -38,7 +38,13 @@
         //     InvokeAsync(StateHasChanged);
         // });
 
-        await RawOn<String>($"post-{Post.Id}", (res) =>
+        // await RawOn<String>($"post-{Post.Id}", (res) =>
+        // {
+        //     Console.WriteLine("Post updated from raw On", res);
+        //     lastMsg = res;
+        // });
+
+        await BlossomOn<BlossomEntityChanged>(Post, (res) =>
         {
             Console.WriteLine("Post updated from raw On", res);
             lastMsg = res;
