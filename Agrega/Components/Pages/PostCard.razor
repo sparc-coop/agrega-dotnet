@@ -8,11 +8,10 @@
         <small>@(Post!.Views.HasValue ? Post.Views.Value : 0) view(s)</small>
         <p>(PostId) @Post.Id</p>
         <p>(ConnectionId) @Hub?.ConnectionId</p>
-        <p>@lastMsg</p>
     </div>
     <div class="card-footer">
         <p>@Post.SourceName</p>
-        <i class="bi-share" @onclick="SendGroupMessage"></i>
+        <i class="bi-share" @onclick="SharePostUrl"></i>
         <div>
             <i class="bi-heart" @onclick="async () => await Post.AddLike()"></i> @(Post.Likes.HasValue ? Post.Likes.Value : 0)
         </div>
@@ -20,55 +19,9 @@
     </div>
 </div>
 
-@using Microsoft.AspNetCore.SignalR.Client
 @code {
     [Parameter]
     public Post Post { get; set; }
-
-    public string lastMsg { get; set; } = string.Empty;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Console.WriteLine("PostCard OnInitializedAsycn");
-
-        // Hub.On<String>("ReceiveMessage", (res) =>
-        // {
-        //     Console.WriteLine("Post updated", res);
-        //     lastMsg = res;
-        //     InvokeAsync(StateHasChanged);
-        // });
-
-        // await RawOn<String>($"post-{Post.Id}", (res) =>
-        // {
-        //     Console.WriteLine("Post updated from raw On", res);
-        //     lastMsg = res;
-        // });
-
-        await BlossomOn<BlossomEntityChanged>(Post, (res) =>
-        {
-            Console.WriteLine("Post updated from raw On", res);
-            lastMsg = res;
-        });
-
-        // await RawOn<String>($"Post|{Post.Id}", (res) =>
-        // {
-        //     Console.WriteLine("Post updated from raw On", res);
-        //     lastMsg = res;
-        // });
-
-        // await RawOn<String>("ReceiveMessage2", res =>
-        // {
-        //     Console.WriteLine("Post updated", res);
-        //     lastMsg = res;
-        // });
-
-        // await RawOn<String>($"Post|{Post.Id}", (res) =>
-        // {
-        //     Console.WriteLine("Post updated", res);
-        //     Post.Likes = Post.Likes.HasValue ? Post.Likes.Value + 1 : 1;
-        // });
-
-    }
 
     private async Task OpenSourceUrl()
     {
@@ -82,28 +35,5 @@
         var textToShare = $"Stay updated with the latest .NET news! Check out this article: {Post.Url}. Shared via Agrega.NET";
         await jsRuntime.InvokeVoidAsync("copyToClipboard", textToShare);
         
-    }
-
-    private async Task SendMessage()
-    {
-        if (Hub == null)
-        {
-            Console.WriteLine("Hub is null");
-            return;
-        }
-
-        //todo test pass the post id to broadcast for group there
-        await Hub.InvokeAsync("SendMessage", $"Hello from PostCard {Post.Id}");
-    }
-
-    private async Task SendGroupMessage()
-    {
-        if (Hub == null)
-        {
-            Console.WriteLine("Hub is null");
-            return;
-        }
-
-        await Hub.InvokeAsync("SendToGroup", $"post-{Post.Id}", $"Hello from PostCard {Post.Id}");
     }
 }
