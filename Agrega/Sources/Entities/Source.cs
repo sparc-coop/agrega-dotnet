@@ -8,24 +8,26 @@ namespace Agrega;
 
 public class Source : BlossomEntity<string>
 {
-    public Source(string name, string url, string feedUrl, string imageUrl, string description)
+    public Source(string name, string url, string feedUrl, string channelId, string imageUrl, string type, string description)
     {
         Id = Guid.NewGuid().ToString();
         SourceId = Id;
         Name = name;
         Url = url;
         FeedUrl = feedUrl;
+        ChannelId = channelId;
         ImageUrl = imageUrl;
         Description = description;
         DateCreated = DateTime.UtcNow;
-        Type = "RSS";
+        Type = type;
         Active = true;
     }
 
     public string SourceId { get; set; }
     public string Name { get; set; }
     public string? Url { get; set; }
-    public string FeedUrl { get; set; }
+    public string? FeedUrl { get; set; }
+    public string? ChannelId { get; set; }
     public string? ImageUrl { get; set; }
     public string? Description { get; set; }
     public string Type { get; set; }

@@ -1,22 +1,24 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
+<div class="page @(DarkMode ? "dark-mode" : "")">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <CascadingValue Value="User">
-        <CascadingValue Value="Source">
-            <main>
-                <div class="top-row px-4">
-                    <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        <main>
+            <div class="top-row px-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked="@DarkMode" @onchange="ToggleDarkMode">
+                    <label class="form-check-label" for="flexSwitchCheckChecked">Dark Mode</label>
                 </div>
+                <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            </div>
 
-                <article class="content px-4">
-                    @Body
-                </article>
-            </main>
-        </CascadingValue>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
     </CascadingValue>
 </div>
 
@@ -28,7 +30,14 @@
 
 @inject AuthenticationStateProvider Auth
 
+
+
 @code{
     ClaimsPrincipal? User { get; set; }
-    Source? Source;
+    public bool DarkMode { get; set; } = true;
+
+    private void ToggleDarkMode(ChangeEventArgs e)
+    {
+        DarkMode = (bool)e.Value;
+    }
 }

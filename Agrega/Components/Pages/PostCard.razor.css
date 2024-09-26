@@ -28,3 +28,14 @@
 .card-footer p{
     margin-bottom:0;
 }
+
+.dark-mode .card {
+    border: 1px solid #3D3D3D;
+    background-color: #292929;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.28), 0px 0px 2px 0px rgba(0, 0, 0, 0.24);
+}
+
+.dark-mode .card-footer {
+    border: 1px solid #3D3D3D;
+    background-color: #292929;
+}

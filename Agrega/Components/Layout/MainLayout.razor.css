@@ -4,6 +4,23 @@
     flex-direction: column;
 }
 
+.page.dark-mode{
+    background-color: #1F1F1F;
+    color:#F9F8FE;
+}
+
+.dark-mode .sidebar {
+    /*background-image: linear-gradient(180deg, rgb(5, 0, 0) 0%, #3a0647 70%);*/
+    background-color: black;
+    background-image: none;
+}
+
+.dark-mode .top-row {
+    background-color: black;
+    color: white;
+    border-bottom: none;
+}
+
 main {
     flex: 1;
 }

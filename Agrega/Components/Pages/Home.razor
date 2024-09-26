@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Serialization
 @attribute [StreamRendering]
 
 
@@ -23,13 +25,12 @@ else
     </div>
 }
 
-
 @code {
     private IEnumerable<Post> posts = null!;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        posts = await Api.Posts.Paginated(1,5);
+        posts = await Api.Posts.Paginated(1,15);
     }
 
 }

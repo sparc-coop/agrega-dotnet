@@ -20,8 +20,16 @@
         <input type="text" class="form-control" id="url" @bind="@newSource.FeedUrl" />
     </div>
     <div class="mb-2">
+        <label for="url">Channel Id:</label>
+        <input type="text" class="form-control" id="url" @bind="@newSource.ChannelId" />
+    </div>
+    <div class="mb-2">
         <label for="image">Image:</label>
         <input type="text" class="form-control" id="imageUrl" @bind="@newSource.ImageUrl" />
+    </div>
+    <div class="mb-2">
+        <label for="type">Type:</label>
+        <input type="text" class="form-control" id="type" @bind="@newSource.Type" />
     </div>
     <div class="mb-2">
         <label for="description">Description:</label>
@@ -35,7 +43,7 @@
 
     private async Task Add()
     {
-        await Api.Sources.Create(newSource.Name, newSource.Url, newSource.FeedUrl, newSource.ImageUrl, newSource.Description);
+        await Api.Sources.Create(newSource.Name, newSource.Url, newSource.FeedUrl, newSource.ChannelId, newSource.ImageUrl, newSource.Type, newSource.Description);
         
         Nav.NavigateTo("/sources");
     }
@@ -45,7 +53,9 @@
         public string Name { get; set; }
         public string? Url { get; set; }
         public string? FeedUrl { get; set; }
+        public string? ChannelId { get; set; }
         public string? ImageUrl { get; set; }
+        public string? Type { get; set; }
         public string? Description { get; set; }
     }
 }

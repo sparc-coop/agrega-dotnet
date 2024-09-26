@@ -10,12 +10,14 @@ public class Post : BlossomEntity<string>
         List<string> categories,
         string sourceId,
         string sourceName,
-        string sourceImage)
+        string sourceImage,
+        string imgUrl)
     {
         Id = Guid.NewGuid().ToString();
         PostId = Id;
         Title = title;
         Url = url;
+        ImgUrl = imgUrl;
         Summary = summary;
         PostDate = postDate;
         Authors = authors;

@@ -1,5 +1,8 @@
-﻿@using System.Xml
+﻿@inherits BlossomRealtime
+
+@using System.Xml
 @using System.ServiceModel.Syndication
+
 <div class="source-item">
     <div class="avatar">
         <img src="@Source.ImageUrl" alt="@Source.Name" />
@@ -28,6 +31,8 @@
     </div>
 </div>
 
+@using Agrega._Plugins
+@inject YouTubeService YouTubeService
 @code {
     [Parameter]
     public Source Source { get; set; }
@@ -36,10 +41,41 @@
 
     public async Task FetchFeed(Source source)
     {
-        if(Source.Type == "RSS")
+        if(Source.Type.ToLower() == "rss")
         {
             await FetchRSSFeed(source);
         }
+        else if(Source.Type.ToLower() == "youtube")
+        {
+            await FetchYoutubeFeed(source);
+        }
+    }
+
+    public async Task FetchYoutubeFeed(Source source)
+    {
+        Fetching = true;
+        _Plugins.YouTubeVideoResponse videos = await YouTubeService.GetVideosAsync(source.ChannelId);
+
+        foreach (var video in videos.Items)
+        {
+            bool exists = (await Api.Posts.Exists(video.Id.Url)).Count() > 0;
+
+            if (!exists)
+            {
+                await Api.Posts.Create(video.Snippet.Title,
+                    video.Id.Url,
+                    video.Snippet.Description,
+                    video.Snippet.PublishedAt,
+                    null,
+                    null,
+                    source.SourceId,
+                    source.Name,
+                    source.ImageUrl,
+                    video.Snippet.Thumbnails.High.Url);
+            }
+        }
+        Fetching = false;
+
     }
 
     public async Task FetchRSSFeed(Source source)
@@ -66,7 +102,8 @@
                     item.Categories?.Select(c => c.Name).ToList(),
                     source.SourceId,
                     source.Name,
-                    source.ImageUrl);
+                    source.ImageUrl,
+                    null);
             }
         }
 
