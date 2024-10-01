@@ -28,6 +28,6 @@ public class ReadLaterList : BlossomQuery<Post>
 {
     public ReadLaterList()
     {
-        Query.Where(x => x.ReadLater == true);
+        Query.Where(x => x.ReadLater == true).OrderByDescending(x => x.PostDate);
     }
 }
